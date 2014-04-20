@@ -1,0 +1,54 @@
+html {
+    height: 100%;
+}
+
+.my_form {
+    margin: 0;
+    padding: 0;
+}
+
+.diff_params {
+    margin: 0;
+    padding: 0;
+}
+
+.diff_params ul {
+    margin: 10px 0;
+}
+
+.diff_params li {
+    list-style: none;
+}
+
+.diff_params label {
+    display: block;
+    float: left;
+    width: 80px;
+}
+
+.diff_content {
+    margin: 0;
+}
+
+
+.diff_result {
+    margin: -1px;
+    width: 50%;
+    height: 100%;
+    border: 1px solid #000;
+    border-radius:2px;
+    background: #000;
+}
+
+.diff_result ul {
+    background-color: #f3f3f2;
+    margin: 1px 0;
+    height: 150px;
+    overflow: hidden;
+    border-color: #000;
+}
+
+.diff_result li {
+    list-style: none;
+    padding: 2px;
+}
