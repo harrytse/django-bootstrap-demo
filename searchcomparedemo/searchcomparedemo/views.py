@@ -57,7 +57,7 @@ def search(request):
             url = form.cleaned_data['query']
             print url
             if url.startswith("http://") is False:
-                url = "http://"+url
+                url = "http://10.2.2.10:4053/search/shop?"+url
 
             result = urllib2.urlopen(encoding.smart_str(url)).read()
             if result != '':
@@ -93,7 +93,7 @@ def createQuery(keyword, sorttype, clienttype, postype, lng, lat, distance):
 
     fl="&fl=defaultpic,avgprice,fulladdress,phone,shopid,shoppower,shopname,branchname,address,district,dist(%s,%s:%s)" % (postype,lng,lat)
     limitinfo="&limit=0,100&info=app:WechatNearbyCheckinSearch,platform:OPENAPI,queryid:test" 
-    url='http://10.1.109.212:4163/search/shopwx?'
+    url='http://10.2.2.52:4163/search/shopwx?'
     url+=query
     url+= "%s%s%s%s" % (notquery,sort,fl,limitinfo)
     return url

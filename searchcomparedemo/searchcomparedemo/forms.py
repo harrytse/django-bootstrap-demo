@@ -2,7 +2,7 @@
 from django import forms
 
 clienttypes = [('all','全部'),('gaode','高德'),('dianping','大众点评')]
-postypes = [('shoppoi','shoppoi'),('gpoi','gpoi'),('mpoi','mpoi')]
+postypes = [('gpoi','gpoi'),('shoppoi','shoppoi'),('mpoi','mpoi')]
 sorttypes = [('dpscore','默认排序'),('dist','最近优先'),('shoppower','最高评分')]
 
 class DefaultForm(forms.Form):
