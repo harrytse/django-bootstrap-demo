@@ -28,6 +28,8 @@ function placeMarker(location) {
     marker.setPosition(location);
     document.getElementById('id_lng').value = location.lng();
     document.getElementById('id_lat').value = location.lat();
+    document.getElementById('id_geoLatLng').value = "geo(gpoi,"+location.lng()+":"+location.lat()+",1000)"
+    document.getElementById('id_distLatLng').value = "dist(gpoi,"+location.lng()+":"+location.lat()+")"
 };
 
 

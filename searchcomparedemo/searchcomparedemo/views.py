@@ -7,12 +7,10 @@ from django.utils import encoding
 import urllib2
 import simplejson
 
-from forms import Form
+from forms import DefaultForm,SearchForm
 
+def happy(request):
 
-
-def search(request):
-    
     result = ''
     final_result = ''
     stat=''
@@ -20,7 +18,7 @@ def search(request):
     lat='31.218816'
     lng='121.416603'
     if request.method == 'POST':
-        form = Form(request.POST)
+        form = DefaultForm(request.POST)
         if form.is_valid():
             keyword = form.cleaned_data['keyword']
             clienttype = form.cleaned_data['clienttype']
@@ -35,13 +33,42 @@ def search(request):
                 url = createQuery(keyword, sorttype, clienttype, postype, lng, lat, distance)
                 result = urllib2.urlopen(encoding.smart_str(url)).read()
                 if result != '':
-                    
+
                     final_result = simplejson.loads(result)['records']
                     total = simplejson.loads(result)['totalhits']
     else:
-        form = Form()
+        form = DefaultForm()
 
     return render_to_response('happytimes.html', {'form': form, 'total':total, 'result': final_result, 'lat':lat, 'lng':lng}, context_instance=RequestContext(request))
+
+
+def search(request):
+    
+    result = ''
+    final_result = ''
+    stat=''
+    total='0'
+    alg = ''
+    lat='31.218816'
+    lng='121.416603'
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            url = form.cleaned_data['query']
+            print url
+            if url.startswith("http://") is False:
+                url = "http://"+url
+
+            result = urllib2.urlopen(encoding.smart_str(url)).read()
+            if result != '':
+                all_result = simplejson.loads(result)
+                final_result = all_result['records']
+                alg = all_result['otherinfo']['algversion']
+                total = simplejson.loads(result)['totalhits']
+    else:
+        form = SearchForm()
+
+    return render_to_response('searchdemo.html', {'form': form, 'total':total, 'result': final_result, 'lat':lat, 'lng':lng, 'alg':alg}, context_instance=RequestContext(request))
 
 def createQuery(keyword, sorttype, clienttype, postype, lng, lat, distance):
     keywordquery = ''

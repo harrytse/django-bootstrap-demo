@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Demo</title>
+
+    <link href="/static/css/bootstrap.css" rel="stylesheet" media="screen">
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.affix.js"></script>
+    <script type="text/javascript" src="http://ditu.google.cn/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="/static/js/googlemap.js"></script>
+    {% load extras %}
+    <script type="text/javascript">
+    $(window).load(
+        function()
+        {
+                initialize({{lng}},{{lat}})
+        }
+    );
+    </script>
+
+    <style type="text/css">
+         #map_canvas { height: 400px }
+   </style>
+
+</head>
+<body>
+    <h1 class="text-center">搜索Demo</h1>
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div id="search-bar" class="span6">
+                <div class="pull-right">
+                    <!--
+                    <form  id="searchForm" class="my_form" action="." method="POST">
+                        {% csrf_token %}
+                        <div id="params">
+                            <ul>
+                                <div class="row">
+                                    <div class="input-prepend">
+                                        <span class="add-on" style="width:50px">Query</span>{{form.query}}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="input-prepend">
+                                        <span class="add-on" style="width:50px">经度</span>{{form.lng}}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="input-prepend">
+                                        <span class="add-on" style="width:50px">纬度</span>{{form.lat}}
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="span6">
+
+                                    </div>
+                                    <div class="span2">
+                                        <button class="btn btn-middle btn-primary" type="submit" name="search">搜索</button>
+                                    </div>
+
+                                </div>
+                            </ul>
+                        </div>
+                    </form>
+                    <-->
+                    <form class="form-horizontal" action="" method="POST" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+                        {% csrf_token %}
+                        {{ form.media }}
+                        {% if form.errors %}
+                            <div class="alert alert-error">
+                                <ul>
+                                    {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% for field in form.visible_fields %}
+                            <div class="control-group {{ field.html_name }} {% if field.errors %}error{% endif %}">
+                                <label class="control-label">{{ field.label }}{% if field.field.required %} *{% endif %}</label>
+                                <div class="controls">
+                                    {{ field }}
+                                    {% if field.errors %}<span class="help-inline">{{ field.errors.as_text }}</span>{% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% for field in form.hidden_fields %}
+                            {{ field }}
+                        {% endfor %}
+
+
+                        <div class="form-actions">
+                            <input class="btn btn-primary btn-large pull-right" type="submit" value="Submit"/>
+
+                        </div>
+                    </form>
+                </div>
+
+                <div id="result-pane" >
+                        <div id="result-count" class="span">共搜到 {{total}} 个结果，只展示前100个结果，采用排序算法为 {{ alg }}</div>
+
+                        {% for item in result %}
+                        <hr/>
+                            <table>
+                                <tr>
+                                    <td colspan="3"><h5><a href="http://www.dianping.com/shop/{{ item.shopid }}">{{ item.shopname }}&nbsp;{{item.branchname}}</a></td>
+
+                                    <td></h5>距离: {{ item|get_item:"_distance_" }} 米</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="5"><img src="{{item.defaultpic}}" /></td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                    <td></td>
+                                    <td>星级: {{item.shoppower}}</td>
+                                </tr>
+                                <tr>
+                                   <td></td>
+                                   <td></td>
+                                   <td>地址: {{item.address}}</td>
+                                </tr>
+                                <tr>
+                                   <td></td>
+                                   <td></td>
+                                   <td>电话: {{item.phone}}</td>
+                                </tr>
+                                <tr>
+                                   <td></td>
+                                   <td></td>
+                                   <td>人均: {{item.avgprice}}</td>
+                                </tr>
+
+                            </table>
+
+                        {% endfor %}
+                        <div id="loading-status" style="text-align: center; font-size: 20pt;"></div>
+                </div>
+            </div>
+
+
+
+
+            <div class="span6">
+                <div class="accordion" id="accordion2">
+                    <div class="accordion-group">
+                      <div class="accordion-heading">
+                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                          通过地图点击设置坐标（只适用于google地图）
+                        </a>
+                      </div>
+                      <div id="collapseOne" class="accordion-body collapse">
+                        <div class="accordion-inner">
+                          <div id="map" align="center">
+                       <div id="pos_locate"><input id="posWord" type="text" value="" />&emsp;<button onclick="findPosition()" style="height:30px;font-size:20px">快速定位</button></div>
+                          <div id="map_canvas"></div></div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
