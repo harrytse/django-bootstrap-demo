@@ -58,14 +58,17 @@ def search(request):
         form = SearchForm(request.POST)
         if form.is_valid():
             url = form.cleaned_data['query']
+            lat = form.cleaned_data['lat']
+            lng = form.cleaned_data['lng']
             print url
             if url.startswith("http://") is False:
-                url = "http://10.2.2.10:4053/search/shop?"+url
+                url = "http://192.168.5.149:4053/search/shop?"+url
 
             result = urllib2.urlopen(encoding.smart_str(url)).read()
             if result != '':
                 all_result = simplejson.loads(result)
                 final_result = all_result['records']
+                print final_result
                 alg = all_result['otherinfo']['algversion']
                 total = simplejson.loads(result)['totalhits']
     else:
