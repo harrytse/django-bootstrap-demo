@@ -9,6 +9,9 @@ import simplejson
 
 from forms import DefaultForm,SearchForm
 
+def welcome(request):
+    return render_to_response('list.html')
+
 def happy(request):
 
     result = ''

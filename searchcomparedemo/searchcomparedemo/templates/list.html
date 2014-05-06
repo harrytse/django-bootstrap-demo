@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+<title>{% block title %}{% endblock %}</title>
+<!-- Bootstrap -->
+<link href="/static/css/bootstrap.css" rel="stylesheet" media="screen">
+</head>
+
+<body>
+    <div class="container-fluid">
+        
+        <div class="row-fluid text-center">
+            <a href="../weixin/"><h1>微信</h1></a>
+        </div>
+        
+        <div class="row-fluid text-center">
+            <a href="../dianping/"><h1>点评</h1></a>
+        </div>
+    </div>
+</body>
+</html>
