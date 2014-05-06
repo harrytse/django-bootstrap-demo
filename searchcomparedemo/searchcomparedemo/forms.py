@@ -21,4 +21,14 @@ class SearchForm(forms.Form):
     geoLatLng = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={'value': '','style': 'width:400px;'}))
     distLatLng = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={'value': '','style': 'width:400px;'}))
 
+class ShopSearchForm(forms.Form):
+    lng = forms.CharField(label='经度') # widget=forms.TextInput(attrs={'value': '','style': 'width:200px;'}))
+    lat = forms.CharField(label='纬度') # widget=forms.TextInput(attrs={'value': '','style': 'width:200px;'}))
+    category = forms.CharField(label='类别',required=False,initial='10') #widget=forms.TextInput(attrs={'value': '','style': 'width:200px;'}))
+    radius = forms.CharField(label='范围', required=False,initial='1000') #widget=forms.TextInput(attrs={'value': '','style': 'width:200px;'}))
+    quality = forms.CharField(label='基础质量权重', required=False,initial='7') #widget=forms.TextInput(attrs={'value': '','style': 'width:200px;'}))
+    dist = forms.CharField(label='距离权重', required=False,initial='3') #widget=forms.TextInput(attrs={'value': '','style': 'width:200px;'}))
+
+
+
 

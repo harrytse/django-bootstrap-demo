@@ -57,63 +57,12 @@
                             {{ field }}
                         {% endfor %}
 
-
-                        <div class="form-actions">
-                            <input class="btn btn-primary btn-large pull-right" type="submit" value="Submit"/>
-
+                        <div class="text-center">
+                            <input class="btn btn-primary " type="submit" value="Submit"/>
                         </div>
                     </form>
                 </div>
 
-                <div id="result-pane row-fluid" >
-                        <div id="result-count" class="span">共搜到 {{total}} 个结果，只展示前100个结果，采用排序算法为 {{ alg }}</div>
-
-                        {% for item in result %}
-                            <hr/>
-                            <div class="row-fluid">
-
-                                <div class="span4">
-                                    <div><img src="{{item.defaultpic}}" /></div>
-                                </div>
-
-                                <div class="span8">
-                                    <div>
-                                        <div><h5><a href="http://www.dianping.com/shop/{{ item.shopid }}">{{ item.shopname }}&nbsp;{{item.branchname}}</a></h5></div>
-                                    </div>
-                                    <div class="span4">
-                                        <div>距离: {{ item|get_item:"_distance_" }} 米</div>
-                                    </div>
-                                    <div class="span2">
-
-                                        <div>星级: {{item.shoppower}}</div>
-                                    </div>
-
-                                    <div class="span2">
-
-                                       <div>人均: {{item.avgprice}}</div>
-                                    </div>
-
-
-                                </div>
-
-                            </div>
-                            <div>
-
-                               <div>打分: {{item.explaination}}</div>
-                            </div>
-
-
-
-
-                        {% endfor %}
-                        <div id="loading-status" style="text-align: center; font-size: 20pt;"></div>
-                </div>
-            </div>
-
-
-
-
-            <div class="span6">
                 <div class="accordion" id="accordion2">
                     <div class="accordion-group">
                       <div class="accordion-heading">
@@ -129,6 +78,62 @@
                         </div>
                       </div>
                     </div>
+                </div>
+
+
+
+            </div>
+
+
+
+
+            <div class="span6">
+                 <div id="result-pane row-fluid" >
+                        <div id="result-count" class="span">共搜到 {{total}} 个结果，只展示前100个结果，采用排序算法为 {{ alg }}</div>
+
+                        {% for item in result %}
+                            <hr/>
+                            <div class="row-fluid">
+                                <div class="span4">
+                                    <div><img src="{{item.defaultpic}}" /></div>
+                                </div>
+                                <div class="span8">
+                                    <div class="row-fluid">
+                                        <div><h5><a href="http://www.dianping.com/shop/{{ item.shopid }}">{{ item.shopname }}&nbsp;{{item.branchname}}</a></h5></div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span3">
+                                            <div>距离: {{ item|get_item:"_distance_" }} 米</div>
+                                        </div>
+                                        <div class="span3">
+
+                                            <div>星级: {{item.shoppower}}</div>
+                                        </div>
+
+                                        <div class="span3">
+
+                                           <div>人均: {{item.avgprice}}</div>
+                                        </div>
+
+                                        <div class="span3">
+
+                                           <div>类别: {{item.maincategoryname}}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-fluid">
+                                        <div>地址: {{item.address}}</div>
+                                </div>
+                                </div>
+
+                            </div>
+
+
+
+
+
+                        {% endfor %}
+                        <div id="loading-status" style="text-align: center; font-size: 20pt;"></div>
                 </div>
 
             </div>

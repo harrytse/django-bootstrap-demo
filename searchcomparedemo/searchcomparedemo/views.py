@@ -7,7 +7,7 @@ from django.utils import encoding
 import urllib2
 import simplejson
 
-from forms import DefaultForm,SearchForm
+from forms import DefaultForm,SearchForm, ShopSearchForm
 
 def welcome(request):
     return render_to_response('list.html')
@@ -103,3 +103,49 @@ def createQuery(keyword, sorttype, clienttype, postype, lng, lat, distance):
     url+=query
     url+= "%s%s%s%s" % (notquery,sort,fl,limitinfo)
     return url
+
+
+def shopsearch(request):
+
+    result = ''
+    final_result = ''
+    stat=''
+    total='0'
+    alg = ''
+    lat='31.218816'
+    lng='121.416603'
+    if request.method == 'POST':
+        form = ShopSearchForm(request.POST)
+        if form.is_valid():
+            lat = form.cleaned_data['lat']
+            lng = form.cleaned_data['lng']
+            category = form.cleaned_data['category']
+            radius = form.cleaned_data['radius']
+            q_w = form.cleaned_data['quality']
+            d_w = form.cleaned_data['dist']
+            url = createShopQuery(lat, lng, category, radius, q_w, d_w)
+            print url
+            result = urllib2.urlopen(encoding.smart_str(url)).read()
+            if result != '':
+                all_result = simplejson.loads(result)
+                final_result = all_result['records']
+                #print final_result
+                alg = all_result['otherinfo']['algversion']
+                total = simplejson.loads(result)['totalhits']
+    else:
+        form = ShopSearchForm()
+
+    return render_to_response('shopsearchdemo.html', {'form': form, 'total':total, 'result': final_result, 'lat':lat, 'lng':lng, 'alg':alg}, context_instance=RequestContext(request))
+
+
+def createShopQuery(lat, lng, category='10', radius='1000', baseWeight='7', distWeight='3', businessWeight='0.3', localClickWeight='0', wifiWeight='0', sort='shopnewlocal', interval='100'):
+    if category!='0':
+        cate = 'term(categoryids,%s),' % category
+    else:
+        cate = ''
+    query = 'http://192.168.5.149:4053/search/shop?query=%sgeo(gpoi,%s:%s,%s)' \
+            '&sort=desc(%s)&limit=0,100&fl=shopid,shopname,shoppower,address,avgprice,maincategoryname,dist(gpoi,%s:%s),' \
+            'defaultpic&info=app:PointShopSearch,platform:MAPI,recordscoredetail:true,interval:%s,' \
+            'debug:true,localClick:%s,dist:%s,base:%s' \
+            % (cate,lng,lat,radius,sort,lng,lat,interval,localClickWeight,distWeight,baseWeight)
+    return query
