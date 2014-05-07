@@ -30,6 +30,7 @@ function placeMarker(location) {
     document.getElementById('id_lat').value = location.lat();
     document.getElementById('id_geoLatLng').value = "geo(gpoi,"+location.lng()+":"+location.lat()+",1000)"
     document.getElementById('id_distLatLng').value = "dist(gpoi,"+location.lng()+":"+location.lat()+")"
+
 };
 
 
@@ -56,6 +57,11 @@ lng = obj.results[0].geometry.location.lng;
 
 document.getElementById('id_lng').value = lat;
 document.getElementById('id_lat').value = lng;
+
+
+
+
+
 
 var pos = new google.maps.LatLng(lat,lng);
 map.setCenter(pos);
